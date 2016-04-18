@@ -22,9 +22,17 @@
 
 */
 #include "stdafx.h"
-
-
+int Numberofways(int n){
+	if (n == 0)
+		return 1;
+	if (n < 0)
+		return 0;
+	return Numberofways(n - 1) + Numberofways(n - 2);
+}
 int get_steps(int s)
 {
-	return 0;
+	if (s <= 0){
+		return 0;
+	}
+	return Numberofways(s);
 }

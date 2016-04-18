@@ -43,6 +43,108 @@ P.S: The Above Problem is just a modified version of a popular BackTracking prob
 */
 
 #include "stdafx.h"
+void print_field(int *field, int size){
+	for (int i = 0; i < size; i++){
+		for (int j = 0; j < size; j++){
+			printf("%d ", *((field + i*size) + j));
+		}
+		printf("\n");
+	}
+}
+int isSafe(int *field,int x,int y,int size){
+	if (x >= size || y >= size || x < 0 || y < 0){ // checking boundary conditions
+		return 0;
+	}
+	else {
+		for (int m = 0; m <=y; m++){     // checking left to x,
+			//printf("%d ", *((field + x * size) + m));
+			if (*((field + x * size) + m)==1){
+				return 0;
+			}
+		}
+		for (int m = y + 1; m <size; m++){  // chekcing right to x,y
+			//printf("%d ", *((field + x * size) + m));
+			if (*((field + x * size) + m) == 1){
+				return 0;
+			}
+		}
+		for (int m = 0; m <=x; m++){  // checking above x,y
+			//printf("%d ", *((field + m * size) + y));
+			if (*((field + m * size) + y) == 1){
+				return 0;
+			}
+		}
+		for (int m = x + 1; m < size; m++){ // checking below x,y
+			//printf("%d ", *((field + m * size) + y));
+			if (*((field + m* size) + y) == 1){
+				return 0;
+			}
+		}
+		for (int m = x - 1, n = y - 1; m >= 0&& m < size&& n < size&& n >= 0; m--, n--){ // checking top-left diagonal
+			//printf("%d ", *((field + m * size) + n));
+			if (*((field + m * size) + n) == 1){
+				return 0;
+			}
+		}
+		for (int m = x + 1, n = y + 1; m >= 0&& m < size&& n >= 0&& n < size; m--, n--){ // checking bottom-right diagonal
+			//printf("%d ", *((field + m * size) + n));
+			if (*((field + m * size) + n) == 1){
+				return 0;
+			}
+		}
+		for (int m = x - 1, n = y + 1; m >= 0&& m < size&& n >= 0&& n < size; m--, n++){ //checking top-right diagonal
+			//printf("%d ", *((field + m * size) + n));
+			if (*((field + m * size) + n) == 1){
+				return 0;
+			}
+		}
+		for (int m = x + 1, n = y - 1; m >= 0&& m < size&& n >= 0&& n < size; m++, n--){ //checking bottom-left diagonal
+			//printf("%d ", *((field + m * size) + n));
+			if (*((field + m * size) + n) == 1){
+				return 0;
+			}
+		}
+	}
+	return 1;
+}
+int arrange_snipers_Util(int *field,int x,int y,int *xMoves,int *yMoves,int N,int size){
+	if (N==0){
+		return 1;
+	}
+	for (int i = 0; i < 8; i++){
+		int x_next = x + xMoves[i];
+		int y_next = y + yMoves[i];
+			if (isSafe(field, x_next, y_next, size)){
+				*((field + x_next * size) + y_next) = 1;
+				//print_field(field, size);
+				printf("\n");
+				if (arrange_snipers_Util(field, x_next, y_next, xMoves, yMoves, N - 1, size)==1){
+					return 1;
+				}	
+			}
+	}
+	return 0;
+}
+
 int solve_nsnipers(int *battlefield, int n){
+	if (n == 0){
+		return 0;
+	}
+	int xMoves[] = { 2, 1, -1, -2, -2, -1, 1, 2 };
+	int yMoves[] = { 1, 2, 2, 1, -1, -2, -2, -1 };
+	for (int j = 0; j < n; j++){
+		*((battlefield + 0 * n) + j) = 1;
+		if (arrange_snipers_Util(battlefield, 0, j, xMoves, yMoves, n-1, n)==1){
+			return 1;
+		}
+		else{
+			//printf("it is not worked at  0,%d\n", j);
+			for (int i = 0; i < n; i++){
+				for (int j = 0; j < n; j++){
+					*((battlefield + i*n) + j) = 0;
+				}
+			}
+		}
+	}
 	return 0;
 }

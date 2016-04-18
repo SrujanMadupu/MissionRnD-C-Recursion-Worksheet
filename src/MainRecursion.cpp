@@ -15,21 +15,38 @@ int main(){
 
 	//Check Maze Sample Code
 
-	/*
-	int maze[4][3] = {
-		{ 0, 0, 1 },
-		{ 1, 1, 1 },
-		{ 1, 0, 1 },
-		{ 1, 0, 1 }
-	};
-
-	int m = 4, n = 3;
-	int x1 = 3, y1 = 0, x2 = 0, y2 = 2;
-
-	int check=path_exists(&maze[0][0], m, n, x1, y1, x2, y2);
-	printf("%d\n", check);
-	*/
-
 	
+	int **matrix=(int**)malloc(sizeof(int) * 5);
+	for (int i = 0; i < 5; i++){
+		matrix[i] = (int*)malloc(sizeof(int) * 5);
+	}
+	for (int i = 0; i < 5; i++){
+		for (int j = 0; j < 5; j++){
+			matrix[i][j] = i * j;
+		}
+	}
+
+	//printf("%d %d", matrix[2][1], matrix[2][2]);
+	//printf("\n");
+
+	int *result = (int*)malloc(sizeof(int) * 25);
+	result = spiral(5, 5, matrix);
+	for (int i = 0; i < 25; i++){
+		printf("%d ", result[i]);
+	}
+	/*
+	int battlefield[8][8];
+	for (int i = 0; i < 8; i++){
+		for (int j = 0; j < 8; j++){
+			battlefield[i][j] = 0;
+		}
+	}
+	if(solve_nsnipers((int*)battlefield, 8)){
+		printf("All snipers are arranged");
+	}
+	else{
+		printf("they shooted each other and died :(\n");
+	}
+	*/
 	return 0;
 }

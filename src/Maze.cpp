@@ -34,9 +34,53 @@ more parameters .
 */
 
 #include<stdlib.h>
-
-
+int **visitedMatrix;
+int path_exists_recursion(int*, int, int, int, int, int, int);
 int path_exists(int *maze, int rows, int columns, int x1, int y1, int x2, int y2)
-{
-	return 1;
+{   
+	if (x1 >= rows || x2 >= rows || y1 >= columns || y2 >= columns){
+		return 0;
+	}
+	visitedMatrix = (int**)malloc(rows*sizeof(int*));
+	for (int i = 0; i < rows; i++){
+		visitedMatrix[i] = (int*)malloc(columns*sizeof(int));
+	}
+	for (int i = 0; i < rows; i++){
+		for (int j = 0; j < columns; j++){
+			visitedMatrix[i][j] = 0;
+		}
+	}
+	return path_exists_recursion(maze, rows, columns, x1, y1, x2, y2);
+}
+
+int path_exists_recursion(int *maze, int rows, int columns, int x1, int y1, int x2, int y2){
+	if (x1 >= rows || y1 >= columns || x1 < 0 || y1 < 0){
+		return 0;
+	}
+	if (visitedMatrix[x1][y1] == 1){
+		return 0;
+	}
+	if (visitedMatrix[x1][y1] == 0){
+		visitedMatrix[x1][y1] = 1;
+		if (*((maze + x1*columns) + y1) == 0){
+			return 0;
+		}
+		else if (x1 == x2&&y1 == y2){
+			return 1;
+		}
+	}
+	
+
+	if (path_exists_recursion(maze, rows, columns, x1, y1 + 1, x2, y2)){
+		return 1;
+	}
+	else if (path_exists_recursion(maze, rows, columns, x1 + 1, y1, x2, y2)){
+		return 1; 
+	} 
+	else if (path_exists_recursion(maze, rows, columns, x1 - 1, y1, x2, y2)){ 
+		return 1; 
+	} 
+	else if(path_exists_recursion(maze, rows, columns, x1, y1 - 1, x2, y2)){ 
+		return 1;
+	}
 }

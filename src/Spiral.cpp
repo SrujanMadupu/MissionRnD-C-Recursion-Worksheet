@@ -33,8 +33,44 @@ Note : Check the function Parameters ,Its a double pointer .
 
 #include "stdafx.h"
 #include<stdlib.h>
+void get_top_right_layer(int **ip, int x1, int y1, int x2, int y2, int *arr, int index);
+void get_bottom_left_layer(int **ip, int x1, int y1, int x2, int y2, int *arr, int index);
 
+
+void get_top_right_layer(int **ip,int x1,int y1,int x2,int y2,int *arr,int index){
+	for (int i = y1 ; i <= y2; i++){
+		arr[index++] = ip[x1][i];
+	}
+	for (int i = x1 + 1; i <= x2; i++){
+		arr[index++] = ip[i][y2];
+	}
+	if (x2 - x1 > 0 && y2-y1 > 0){
+		get_bottom_left_layer(ip, x1 + 1, y1, x2, y2 - 1, arr, index);
+	}
+}
+void get_bottom_left_layer(int **ip,int x1,int y1,int x2,int y2,int *arr,int index){
+	for (int i = y2; i >=y1; i--){
+		arr[index++] = ip[x2][i];
+	}
+	for (int i = x2-1; i>=x1; i--){
+		arr[index++] = ip[i][y1];
+	}
+	if (x2 - x1 > 0 && y2-y1 > 0){
+		get_top_right_layer(ip, x1, y1 + 1, x2 - 1, y2, arr, index);
+	}
+}
+int *spiral_recursion(int rows, int columns, int **ip, int *arr,int index){
+	get_top_right_layer(ip, 0, 0, rows-1, columns-1, arr, index);
+	return arr;
+}
 int *spiral(int rows, int columns, int **input_array)
 {
-	return NULL;
+	if ( !input_array || rows <= 0 || columns <= 0 ){
+		return NULL;
+	}
+	else{
+		int *spiral_array = (int*)malloc(sizeof(int)*rows*columns);
+		int i=0;
+		return spiral_recursion(rows, columns, input_array,spiral_array,i);
+	}
 }
