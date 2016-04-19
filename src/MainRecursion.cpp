@@ -15,7 +15,7 @@ int main(){
 
 	//Check Maze Sample Code
 
-	
+	/*
 	int **matrix=(int**)malloc(sizeof(int) * 5);
 	for (int i = 0; i < 5; i++){
 		matrix[i] = (int*)malloc(sizeof(int) * 5);
@@ -34,7 +34,7 @@ int main(){
 	for (int i = 0; i < 25; i++){
 		printf("%d ", result[i]);
 	}
-	/*
+	*/
 	int battlefield[8][8];
 	for (int i = 0; i < 8; i++){
 		for (int j = 0; j < 8; j++){
@@ -47,6 +47,6 @@ int main(){
 	else{
 		printf("they shooted each other and died :(\n");
 	}
-	*/
+	
 	return 0;
 }
